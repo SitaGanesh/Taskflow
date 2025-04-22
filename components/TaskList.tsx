@@ -57,18 +57,18 @@ export default function TaskList() {
                 {task.title}
               </span>
             </div>
-            <div className="flex space-x-4">
+            <div>
               <button
                 onClick={() => dispatch(toggleTask(task.id))}
-                className="text-blue-600 hover:text-blue-800"
+                className="text-blue-600 hover:text-blue-800 mr-2"
               >
-                <i className="fas fa-pen"></i>
+                ✏️
               </button>
               <button
                 onClick={() => handleDelete(task.id)}
                 className="text-red-600 hover:text-red-800"
               >
-                <i className="fas fa-trash"></i>
+                🗑️
               </button>
             </div>
           </div>
