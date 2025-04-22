@@ -1,11 +1,18 @@
 'use client';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
 import { setTasks, toggleTask, deleteTask } from '@/store/taskSlice';
+import { RootState } from '@/store';
+
+// Define Task interface based on your store
+interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 export default function TaskList() {
-  const tasks = useSelector((state) => state.task);
+  const tasks = useSelector((state: RootState) => state.task); // Typed useSelector
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,7 +22,7 @@ export default function TaskList() {
       .catch((err) => console.error('Failed to fetch tasks:', err));
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => { // Typed id parameter
     const res = await fetch('/api/tasks', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -27,16 +34,16 @@ export default function TaskList() {
   };
 
   return (
-    <div className="space-y-2 py-40">
+    <div className="space-y-2">
       {tasks.length === 0 ? (
-        <p className="text-gray-500 text-center p-20">No tasks yet. Add one!</p>
+        <p className="text-gray-500 text-center p-6">No tasks yet. Add one!</p>
       ) : (
-        tasks.map((task) => (
+        tasks.map((task: Task) => ( // Typed task parameter
           <div
             key={task.id}
-            className="flex justify-between items-center px-10 py-5 p-40 border-b border-gray-200 hover:bg-gray-50 transition duration-150"
+            className="flex justify-between items-center px-6 py-3 border-b border-gray-200 hover:bg-gray-50 transition duration-150"
           >
-            <div className="flex items-center space-x-3 p-40">
+            <div className="flex items-center space-x-3">
               {task.completed ? (
                 <i className="fas fa-check-circle text-[#8000ff]"></i>
               ) : (
@@ -50,18 +57,18 @@ export default function TaskList() {
                 {task.title}
               </span>
             </div>
-            <div>
+            <div className="flex space-x-4">
               <button
                 onClick={() => dispatch(toggleTask(task.id))}
-                className="text-blue-600 hover:text-blue-800 mr-2"
+                className="text-blue-600 hover:text-blue-800"
               >
-                ✏️
+                <i className="fas fa-pen"></i>
               </button>
               <button
                 onClick={() => handleDelete(task.id)}
                 className="text-red-600 hover:text-red-800"
               >
-                🗑️
+                <i className="fas fa-trash"></i>
               </button>
             </div>
           </div>
